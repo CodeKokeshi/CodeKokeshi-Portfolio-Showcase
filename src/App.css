@@ -1,0 +1,370 @@
+/* ============================================================================
+   APP STYLES - DeviantArt Inspired Portfolio
+   ============================================================================ */
+
+/* Base App */
+.app {
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #fff;
+}
+
+/* Container */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 60px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 80px;
+  }
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 40px;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 20px 60px;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 16px;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+}
+
+.logo__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo__name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.logo__sub {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ============================================================================
+   MAIN CONTENT
+   ============================================================================ */
+
+.main {
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+/* ============================================================================
+   GALLERY GRID - 2 columns, 16:9 cards
+   ============================================================================ */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .gallery {
+    gap: 20px;
+  }
+}
+
+/* ============================================================================
+   VIDEO CARD - All 16:9 aspect ratio
+   ============================================================================ */
+
+.card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  aspect-ratio: 16 / 9;
+}
+
+/* Full width cards (hero at top, leftover at bottom) */
+.card--full {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+}
+
+/* ============================================================================
+   VIDEO ELEMENT - AGGRESSIVELY HIDE ALL CONTROLS
+   ============================================================================ */
+
+.card__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.card:hover .card__video {
+  transform: scale(1.05);
+}
+
+/* NUKE ALL VIDEO CONTROLS */
+.card__video::-webkit-media-controls,
+.card__video::-webkit-media-controls-enclosure,
+.card__video::-webkit-media-controls-panel,
+.card__video::-webkit-media-controls-play-button,
+.card__video::-webkit-media-controls-start-playback-button,
+.card__video::-webkit-media-controls-overlay-play-button,
+.card__video::-webkit-media-controls-current-time-display,
+.card__video::-webkit-media-controls-time-remaining-display,
+.card__video::-webkit-media-controls-timeline,
+.card__video::-webkit-media-controls-volume-slider,
+.card__video::-webkit-media-controls-mute-button,
+.card__video::-webkit-media-controls-fullscreen-button,
+.card__video::-webkit-media-controls-picture-in-picture-button,
+.card__video::-webkit-media-controls-toggle-closed-captions-button,
+.card__video::-webkit-media-controls-overflow-button {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  -webkit-appearance: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Firefox */
+.card__video::-moz-media-controls {
+  display: none !important;
+}
+
+/* ============================================================================
+   OVERLAY & INFO
+   ============================================================================ */
+
+/* Gradient overlay */
+.card__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.9) 0%,
+    rgba(0,0,0,0.5) 40%,
+    rgba(0,0,0,0) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.card__overlay--visible {
+  opacity: 1;
+}
+
+/* Info panel */
+.card__info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.card__info--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: #fff;
+}
+
+.card--full .card__title {
+  font-size: 24px;
+}
+
+@media (min-width: 768px) {
+  .card__title {
+    font-size: 18px;
+  }
+  
+  .card--full .card__title {
+    font-size: 32px;
+  }
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.card__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+  backdrop-filter: blur(8px);
+}
+
+/* Status badges */
+.card__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  z-index: 10;
+}
+
+/* Larger badges for full-width cards and desktop */
+.card--full .card__badge {
+  top: 16px;
+  left: 16px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+@media (min-width: 768px) {
+  .card__badge {
+    top: 16px;
+    left: 16px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+}
+
+/* Current Project badge - green gradient */
+.card__badge--current-project {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+/* Completed badge - blue/purple gradient */
+.card__badge--completed {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* In Progress badge - yellow/orange gradient */
+.card__badge--in-progress {
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+@media (min-width: 768px) {
+  .card__badge {
+    top: 24px;
+    left: 24px;
+    padding: 10px 20px;
+    font-size: 12px;
+  }
+}
+
+/* Card border glow on hover */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0);
+  transition: border-color 0.4s ease;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.card:hover::after {
+  border-color: rgba(255,255,255,0.15);
+}
+
+.card--full:hover::after {
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+
+.footer {
+  padding: 40px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.3);
+}
+
