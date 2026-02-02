@@ -180,7 +180,7 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
     }
   }, [isActive])
 
-  // Desktop: Play/pause based on visibility
+  // Desktop: Play/pause based on visibility (only fully visible videos)
   useEffect(() => {
     if (isMobile()) return // Skip for mobile
     
@@ -189,13 +189,14 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+        // Only play when video is almost fully visible (90%+)
+        if (entry.isIntersecting && entry.intersectionRatio > 0.9) {
           vid.play().catch(() => {})
         } else {
           vid.pause()
         }
       },
-      { threshold: [0, 0.3] }
+      { threshold: [0, 0.9] }
     )
 
     observer.observe(vid)
