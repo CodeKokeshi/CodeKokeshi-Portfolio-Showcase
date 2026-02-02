@@ -188,14 +188,13 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
       <video
         ref={videoRef}
         className="card__video"
+        src={video.src}
         muted
         loop
         playsInline
-        preload="none"
+        preload={isActive ? "auto" : "none"}
         disablePictureInPicture
         controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
-        onCanPlay={() => setCanPlay(true)}
-        onError={() => setCanPlay(false)}
       />
 
       {/* Gradient overlay */}
@@ -206,13 +205,14 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
         <h3 className="card__title">{video.title}</h3>
         
         <div className="card__tags">
-        src={video.src}
-        muted
-        loop
-        playsInline
-        preload={isActive ? "auto" : "none"}
-        disablePictureInPicture
-        controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
+          <span 
+            className="card__tag"
+            style={{ 
+              backgroundColor: `${toolColor}22`,
+              color: toolColor,
+              borderColor: `${toolColor}44`
+            }}
+          >
             {video.tool}
           </span>
         </div>
@@ -233,7 +233,6 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
 // ============================================================================
 
 function App() {
-  return (
   const [currentIndex, setCurrentIndex] = useState(0)
   const [mobile, setMobile] = useState(isMobile())
 
@@ -307,6 +306,7 @@ function App() {
               ))}
             </div>
           )}
+        </div>
       </main>
 
       {/* Footer */}
