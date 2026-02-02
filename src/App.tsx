@@ -278,24 +278,26 @@ function App() {
                 />
               </div>
               
-              <button 
-                className="carousel__btn carousel__btn--prev" 
-                onClick={handlePrev}
-                aria-label="Previous video"
-              >
-                ‹
-              </button>
-              
-              <button 
-                className="carousel__btn carousel__btn--next" 
-                onClick={handleNext}
-                aria-label="Next video"
-              >
-                ›
-              </button>
-
               <div className="carousel__counter">
                 {currentIndex + 1} / {videos.length}
+              </div>
+
+              <div className="carousel__controls">
+                <button 
+                  className="carousel__btn carousel__btn--prev" 
+                  onClick={handlePrev}
+                  aria-label="Previous video"
+                >
+                  ‹
+                </button>
+                
+                <button 
+                  className="carousel__btn carousel__btn--next" 
+                  onClick={handleNext}
+                  aria-label="Next video"
+                >
+                  ›
+                </button>
               </div>
             </div>
           ) : (
