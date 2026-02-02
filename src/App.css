@@ -46,12 +46,33 @@
   z-index: 100;
   padding: 20px 40px;
   background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media (min-width: 768px) {
   .header {
     padding: 20px 60px;
   }
+}
+
+.header__nav-link {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #888;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.header__nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .logo {
@@ -265,6 +286,42 @@
   }
 }
 
+/* Gallery story section (expanded card details) */
+.gallery__story {
+  grid-column: 1 / -1;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  margin-top: -8px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.gallery__story h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: #a78bfa;
+}
+
+.gallery__story p {
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ============================================================================
    VIDEO CARD - All 16:9 aspect ratio
    ============================================================================ */
@@ -282,6 +339,15 @@
 .card--full {
   grid-column: 1 / -1;
   aspect-ratio: 16 / 9;
+}
+
+/* Expanded card (clicked on desktop) */
+.card--expanded {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+  transform: scale(1.02);
+  transition: all 0.3s ease;
 }
 
 /* ============================================================================
@@ -407,11 +473,30 @@
   opacity: 1;
 }
 
+/* Desktop only: add transform transition */
+@media (min-width: 768px) {
+  .card__info {
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+  }
+  
+  .card__info--visible {
+    transform: translateY(0);
+  }
+}
+
 .card__title {
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 10px 0;
   color: #fff;
+}
+
+.card__overview {
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 8px 0 0 0;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .card--full .card__title {
@@ -454,7 +539,7 @@
   }
 }
 
-/* Status badges */
+/* Status badges - SMALL for paired cards (by 2s) */
 .card__badge {
   position: absolute;
   top: 8px;
@@ -469,25 +554,15 @@
   z-index: 10;
 }
 
-/* Desktop: Larger badges for full-width cards */
-@media (min-width: 768px) {
-  .card--full .card__badge {
-    top: 16px;
-    left: 16px;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-  }
-
-  .card__badge {
-    top: 16px;
-    left: 16px;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-  }
+/* LARGER badges ONLY for full-width cards (by 1s: hero, bottom, expanded) */
+.card--full .card__badge,
+.card--expanded .card__badge {
+  top: 16px;
+  left: 16px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
 }
 
 /* Current Project badge - green gradient */
@@ -517,15 +592,6 @@
   
   .card__badge--in-progress {
     box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-  }
-}
-
-@media (min-width: 768px) {
-  .card__badge {
-    top: 24px;
-    left: 24px;
-    padding: 10px 20px;
-    font-size: 12px;
   }
 }
 

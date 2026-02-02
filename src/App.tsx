@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Fragment } from 'react'
 import './App.css'
 
 // ============================================================================
@@ -57,7 +57,6 @@ const videos = [
     src: '/videos/Godot%20-%20Chrono%20Plasmorph%20Remake.mp4',
     tool: 'Godot',
     title: 'Chrono Plasmorph Remake',
-    status: 'In Progress',
     description: 'A remake with full-body sprites and smoother movements',
     story: "Unlike the original which used premade chibi assets, this remake features full-body sprites with smoother movements. Development only reached the platformer movement stage before evolving into the current Metroidvania project. This was the bridge between my Unity past and my Godot future.",
   },
@@ -75,7 +74,6 @@ const videos = [
     src: '/videos/Godot%20-%20True%20Top%20Down%20Demo.mp4',
     tool: 'Godot',
     title: 'True Top Down Demo',
-    status: 'In Progress',
     description: 'A true top-down shooter similar to Intravenous with shoot, roll, knife, and hide mechanics',
     story: "The original version of Trapped in a Nightmare, but instead of pixel art, this one used original hand-drawn animation retraced in SVG for high-quality sprites. A true top-down game similar to Intravenous. So far it has shoot, roll, knife attack, and hide mechanics. I abandoned this version because SVG animations were too tedious, and restarted the project as pixel art.",
   },
@@ -84,8 +82,7 @@ const videos = [
     src: '/videos/Godot%20-%20Yet%20Another%20Platformer.mp4',
     tool: 'Godot',
     title: 'Yet Another Platformer',
-    status: 'In Progress',
-    description: 'An attempt to recreate Chrono Plasmorph in Godot (abandoned)',
+    description: 'An attempt to recreate Chrono Plasmorph in Godot',
     story: "This was my attempt to recreate (not remake) Chrono Plasmorph from Unity to Godot when I first started learning the engine. Eventually abandoned it in favor of other projects.",
   },
   {
@@ -93,7 +90,6 @@ const videos = [
     src: '/videos/007%20Unity%20-%20The%20last%20straw%20for%20Unity%20(I%20quit%20Game%20Dev)%20-%20Flappy%20Bird%20Compilation.mp4',
     tool: 'Unity',
     title: 'Flappy Bird Compilation',
-    status: 'Completed',
     description: 'My Unity game dev journey demonstrated in Flappy Bird',
     story: "This compilation contains 3 Flappy Bird games showing my Unity learning progression. First: a tutorial-based version where I learned the basics. Second: a personal attempt without tutorials, featuring my first try at animation. Third: the final attempt using a pixel art tool for the first time, with real personal assets and proper animations. This was the start of my game dev journey.",
   },
@@ -102,7 +98,7 @@ const videos = [
     src: '/videos/002%20Unity%20-%202D%20Platformer%20(Obstacle%20Course)%20-%20My%20first%20ever%202D%20Game%20-%20Chrono%20Plasmorph%20Beta.mp4',
     tool: 'Unity',
     title: 'Chrono Plasmorph Beta',
-    status: 'Completed',
+    status: 'Beta',
     description: 'A pink-themed platformer using downloaded assets',
     story: "This is the original Chrono Plasmorph Beta - essentially the same game as the remastered version, but using downloaded assets instead of custom ones. Features a pink theme instead of the dark theme you see in the remake.",
   },
@@ -111,7 +107,6 @@ const videos = [
     src: '/videos/003%20Unity%20-%203D%20-%20My%20first%20and%20last%203D%20Game%20(an%20attempt%20that%20resulted%20to%20reality%20check).mp4',
     tool: 'Unity',
     title: '3D Reality Check',
-    status: 'Completed',
     description: 'My first and last 3D game - a massive mistake after learning Flappy Bird',
     story: "Right after learning how to make Flappy Bird, I jumped straight into 3D game development. This was a massive mistake and a harsh reality check. It was my first and last 3D game - I quickly realized I needed to master 2D first.",
   },
@@ -120,7 +115,6 @@ const videos = [
     src: '/videos/005%20-%20RPG%20Maker%20-%20An%20attempt%20to%20reenter%20Pokemon%20Fan%20Game%20scene%20but%20this%20time%20through%20RMMXP%20and%20not%20Rom%20Hacking.mp4',
     tool: 'RPG Maker',
     title: 'Pokemon Fan Game',
-    status: 'Completed',
     description: 'A Pokemon Essentials game featuring 6 choosable characters from BW, BW2, and HeartGold',
     story: "An attempt to reenter the Pokemon fan game scene, but this time through RPG Maker and Pokemon Essentials instead of ROM hacking. The main feature I'm proud of: 6 choosable characters all together in one game, pulled from Pokemon Black/White, Black/White 2, and HeartGold/SoulSilver.",
   },
@@ -129,7 +123,6 @@ const videos = [
     src: '/videos/001%20RPG%20Maker%20-%20Trying%20Game%20Development%20for%20the%20First%20Time%20using%20RPG%20Maker.mp4',
     tool: 'RPG Maker',
     title: 'First Steps in Game Dev',
-    status: 'Completed',
     description: 'My first game dev attempt with intro, cutscenes, and quest lists (2022)',
     story: "Actually my very first attempt at game development, though I don't consider it official. Made in 2022, I created the intro, cutscenes, and quest lists for this mystery RPG Maker game. But it sucked and didn't progress beyond that. I resumed serious game dev in 2024 to learn Unity.",
   },
@@ -141,7 +134,6 @@ const videos = [
     tool: 'Unity',
     title: 'Platformer Refresher',
     isBottom: true,
-    status: 'Completed',
     description: 'A basic platformer with box sprites - my last Unity project before quitting for 6 months',
     story: "A basic platformer where the sprites are just boxes with faces. This was my last Unity project before I quit game dev for 6 months. After this, I had a game dev program/course in college (second semester, 3rd year as a Computer Science student), which reignited my passion and led me to switch to Godot.",
   },
@@ -161,9 +153,12 @@ const toolColors: Record<string, string> = {
 
 interface VideoCardProps {
   video: typeof videos[0]
+  isExpanded?: boolean
+  forceNormalSize?: boolean
+  onClick?: () => void
 }
 
-function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boolean }) {
+function VideoCard({ video, isActive = true, isExpanded = false, forceNormalSize = false, onClick }: VideoCardProps & { isActive?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -187,6 +182,12 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
     const vid = videoRef.current
     if (!vid) return
 
+    // If expanded, always play regardless of visibility
+    if (isExpanded) {
+      vid.play().catch(() => {})
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Only play when video is almost fully visible (90%+)
@@ -201,18 +202,26 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
 
     observer.observe(vid)
     return () => observer.disconnect()
-  }, [])
+  }, [isExpanded])
 
   const toolColor = toolColors[video.tool] || '#888'
 
   // Determine card class
-  const cardClass = video.isHero ? 'card card--full' : video.isBottom ? 'card card--full' : 'card'
+  let cardClass = 'card'
+  if (isExpanded) {
+    cardClass = 'card card--expanded'
+  } else if ((video.isHero || video.isBottom) && !forceNormalSize) {
+    // Only apply full width if nothing else is expanded
+    cardClass = 'card card--full'
+  }
 
   return (
     <div
       className={cardClass}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
     >
       <video
         ref={videoRef}
@@ -229,10 +238,8 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
       {/* Gradient overlay */}
       <div className={`card__overlay ${isHovered ? 'card__overlay--visible' : ''}`} />
 
-      {/* Info panel */}
+      {/* Info panel - Show on hover */}
       <div className={`card__info ${isHovered ? 'card__info--visible' : ''}`}>
-        <h3 className="card__title">{video.title}</h3>
-        
         <div className="card__tags">
           <span 
             className="card__tag"
@@ -245,6 +252,8 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
             {video.tool}
           </span>
         </div>
+        
+        <p className="card__overview">{video.description}</p>
       </div>
 
       {/* Status badge */}
@@ -265,6 +274,7 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [mobile, setMobile] = useState(isMobile())
   const [showStory, setShowStory] = useState(false)
+  const [expandedVideoId, setExpandedVideoId] = useState<number | null>(null)
 
   // Handle window resize
   useEffect(() => {
@@ -286,6 +296,27 @@ function App() {
     setCurrentIndex((prev) => (prev === videos.length - 1 ? 0 : prev + 1))
   }
 
+  const handleCardClick = (videoId: number) => {
+    if (mobile) return
+    setExpandedVideoId(expandedVideoId === videoId ? null : videoId)
+  }
+
+  // Auto-scroll to expanded card
+  useEffect(() => {
+    if (expandedVideoId && !mobile) {
+      // Small delay to allow DOM to update
+      setTimeout(() => {
+        const expandedElement = document.querySelector('.card--expanded')
+        if (expandedElement) {
+          expandedElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          })
+        }
+      }, 100)
+    }
+  }, [expandedVideoId, mobile])
+
   return (
     <div className="app">
       {/* Header */}
@@ -296,6 +327,9 @@ function App() {
             <span className="logo__name">CodeKokeshi</span>
             <span className="logo__sub">Portfolio</span>
           </div>
+        </a>
+        <a href="#/timeline" className="header__nav-link">
+          Game Dev Timeline
         </a>
       </header>
 
@@ -364,11 +398,73 @@ function App() {
               </div>
             </div>
           ) : (
-            // Desktop: Grid Gallery
+            // Desktop: Grid Gallery with expandable cards
             <div className="gallery">
-              {videos.map((video) => (
-                <VideoCard key={video.id} video={video} />
-              ))}
+              {(() => {
+                if (!expandedVideoId) {
+                  // No expansion - normal grid
+                  return videos.map((video) => (
+                    <VideoCard 
+                      key={video.id}
+                      video={video} 
+                      onClick={() => handleCardClick(video.id)}
+                    />
+                  ))
+                }
+
+                // Find clicked card
+                const expandedIndex = videos.findIndex(v => v.id === expandedVideoId)
+                const isSecondHalf = expandedIndex >= videos.length / 2
+                
+                // Find partner index
+                // Hero (0) and Bottom (last) have no partners
+                let partnerIndex = -1
+                if (expandedIndex > 0 && expandedIndex < videos.length - 1) {
+                  // After hero, cards are in pairs: (1,2), (3,4), (5,6), etc.
+                  const posAfterHero = expandedIndex - 1
+                  const isLeftCard = posAfterHero % 2 === 0
+                  partnerIndex = isLeftCard ? expandedIndex + 1 : expandedIndex - 1
+                }
+                
+                // Reorder the array
+                let reordered = [...videos]
+                
+                if (partnerIndex >= 0) {
+                  // Remove the partner
+                  const partner = reordered.splice(partnerIndex, 1)[0]
+                  
+                  if (isSecondHalf) {
+                    // Clicked in second half - move partner to pair with LAST card
+                    // Insert before the last card
+                    reordered.splice(reordered.length - 1, 0, partner)
+                  } else {
+                    // Clicked in first half - move partner to pair with FIRST card  
+                    // Insert after the first card (hero)
+                    reordered.splice(1, 0, partner)
+                  }
+                }
+                
+                // Render cards
+                return reordered.map((video) => {
+                  const isExpanded = video.id === expandedVideoId
+                  return (
+                    <Fragment key={video.id}>
+                      <VideoCard 
+                        video={video} 
+                        isExpanded={isExpanded}
+                        forceNormalSize={expandedVideoId !== null && !isExpanded}
+                        onClick={() => handleCardClick(video.id)}
+                      />
+                      {isExpanded && video.story && (
+                        <div className="gallery__story">
+                          <h3>The Story Behind This Project</h3>
+                          <p>{video.story}</p>
+                        </div>
+                      )}
+                    </Fragment>
+                  )
+                })
+              })()}
             </div>
           )}
         </div>

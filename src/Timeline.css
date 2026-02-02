@@ -1,0 +1,526 @@
+/* ============================================================================
+   TIMELINE PAGE STYLES
+   ============================================================================ */
+
+.timeline-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
+.timeline-header {
+  padding: 24px 32px;
+  text-align: center;
+  position: relative;
+}
+
+.timeline-back {
+  position: absolute;
+  left: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.timeline-back:hover {
+  color: #fff;
+}
+
+.timeline-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 0%, #888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.timeline-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.timeline-relationships-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(71, 140, 191, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
+  border: 1px solid rgba(71, 140, 191, 0.3);
+  border-radius: 8px;
+  color: #478cbf;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.timeline-relationships-btn:hover {
+  background: linear-gradient(135deg, rgba(71, 140, 191, 0.25) 0%, rgba(16, 185, 129, 0.25) 100%);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #10b981;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(16, 185, 129, 0.2);
+}
+
+/* ============================================================================
+   LEGEND
+   ============================================================================ */
+
+.timeline-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #888;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* ============================================================================
+   TIMELINE CONTAINER
+   ============================================================================ */
+
+.timeline-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  padding: 40px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.timeline-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.timeline-container::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.timeline-container::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.timeline-container::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* ============================================================================
+   TIMELINE TRACK
+   ============================================================================ */
+
+.timeline-track {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 150px 100px;
+  min-width: fit-content;
+  gap: 20px;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #ef4444 5%, 
+    #ef4444 15%, 
+    #f59e0b 25%, 
+    #f59e0b 35%,
+    #ffffff 45%, 
+    #ffffff 55%,
+    #478cbf 65%,
+    #478cbf 85%,
+    #10b981 95%,
+    transparent 100%
+  );
+  transform: translateY(-50%);
+  border-radius: 2px;
+}
+
+/* ============================================================================
+   TIMELINE ITEMS
+   ============================================================================ */
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 160px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.timeline-item:hover {
+  transform: scale(1.05);
+}
+
+.timeline-item--selected {
+  transform: scale(1.05);
+}
+
+/* Dot */
+.timeline-item__dot {
+  width: 20px;
+  height: 20px;
+  background: var(--item-color);
+  border-radius: 50%;
+  border: 4px solid #0a0a0a;
+  box-shadow: 0 0 0 2px var(--item-color), 0 0 20px var(--item-color);
+  z-index: 2;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.timeline-item:hover .timeline-item__dot {
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px var(--item-color), 0 0 30px var(--item-color);
+}
+
+/* Year Badge */
+.timeline-item__year {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--item-color);
+  white-space: nowrap;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  border: 1px solid var(--item-color);
+}
+
+/* Card */
+.timeline-item__card {
+  position: absolute;
+  width: 160px;
+  padding: 12px;
+  background: #151515;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.timeline-item:hover .timeline-item__card {
+  border-color: var(--item-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.timeline-item--selected .timeline-item__card {
+  border-color: var(--item-color);
+  background: #1a1a1a;
+}
+
+.timeline-item__card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.timeline-item__card p {
+  font-size: 11px;
+  color: #888;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Card positioning - alternating top/bottom */
+.timeline-item__card--top {
+  bottom: calc(50% + 40px);
+}
+
+.timeline-item__card--bottom {
+  top: calc(50% + 40px);
+}
+
+/* Year positioning based on card position */
+.timeline-item__card--top ~ .timeline-item__year,
+.timeline-item:has(.timeline-item__card--top) .timeline-item__year {
+  top: calc(50% + 20px);
+}
+
+.timeline-item__card--bottom ~ .timeline-item__year,
+.timeline-item:has(.timeline-item__card--bottom) .timeline-item__year {
+  bottom: calc(50% + 20px);
+}
+
+/* Type-specific styles */
+.timeline-item--era .timeline-item__dot {
+  width: 28px;
+  height: 28px;
+}
+
+.timeline-item--era .timeline-item__card {
+  width: 180px;
+}
+
+.timeline-item--era .timeline-item__card h3 {
+  font-size: 14px;
+}
+
+.timeline-item--milestone .timeline-item__dot {
+  border-radius: 4px;
+  transform: rotate(45deg);
+}
+
+.timeline-item--milestone:hover .timeline-item__dot {
+  transform: rotate(45deg) scale(1.3);
+}
+
+/* ============================================================================
+   DETAIL PANEL
+   ============================================================================ */
+
+.timeline-detail {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.timeline-detail__content {
+  background: #151515;
+  border-radius: 16px;
+  padding: 32px;
+  width: fit-content;
+  min-width: 500px;
+  max-width: min(95vw, 1200px);
+  height: 541px;
+  max-height: 541px;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #2a2a2a;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timeline-detail__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #2a2a2a;
+  color: #888;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.timeline-detail__close:hover {
+  background: #3a3a3a;
+  color: #fff;
+}
+
+.timeline-detail__year {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timeline-detail__content h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0 12px 0;
+  color: #fff;
+}
+
+.timeline-detail__desc {
+  color: #888;
+  font-size: 14px;
+  margin: 0 0 16px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.timeline-detail__story {
+  color: #ccc;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.timeline-detail__video {
+  width: 500px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background: #000;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.timeline-detail__embed {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+}
+
+.timeline-detail__embed iframe {
+  display: block;
+  border: none;
+}
+
+.timeline-detail__link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+  border: 1px solid #444;
+}
+
+.timeline-detail__link:hover {
+  background: linear-gradient(135deg, #444 0%, #2a2a2a 100%);
+  transform: translateX(4px);
+}
+
+/* ============================================================================
+   MOBILE STYLES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .timeline-header {
+    padding: 16px;
+  }
+  
+  .timeline-back {
+    position: relative;
+    left: 0;
+    transform: none;
+    display: block;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+  
+  .timeline-header h1 {
+    font-size: 24px;
+  }
+  
+  .timeline-legend {
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .legend-item {
+    font-size: 10px;
+  }
+  
+  .timeline-track {
+    padding: 120px 50px;
+  }
+  
+  .timeline-item {
+    min-width: 120px;
+  }
+  
+  .timeline-item__card {
+    width: 130px;
+    padding: 10px;
+  }
+  
+  .timeline-item__card h3 {
+    font-size: 11px;
+  }
+  
+  .timeline-item__card p {
+    font-size: 10px;
+  }
+  
+  .timeline-detail__content {
+    padding: 24px;
+  }
+  
+  .timeline-detail__content h2 {
+    font-size: 20px;
+    padding-right: 30px;
+  }
+  
+  .timeline-detail__story {
+    font-size: 14px;
+  }
+}
+
+/* ============================================================================
+   SCROLL HINT ANIMATION
+   ============================================================================ */
+
+.timeline-container::after {
+  content: '← Drag to scroll →';
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #444;
+  font-size: 12px;
+  pointer-events: none;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
