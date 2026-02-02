@@ -317,6 +317,12 @@ function App() {
                   backgroundColor: `${toolColors[videos[currentIndex].tool] || '#888'}22`,
                   color: toolColors[videos[currentIndex].tool] || '#888',
                   borderColor: `${toolColors[videos[currentIndex].tool] || '#888'}44`
+                }}>
+                  {videos[currentIndex].tool}
+                </div>
+                <p className="carousel__description">
+                  {videos[currentIndex].description}
+                </p>
                 {videos[currentIndex].story && (
                   <>
                     <button 
@@ -332,12 +338,6 @@ function App() {
                     )}
                   </>
                 )}
-                }}>
-                  {videos[currentIndex].tool}
-                </div>
-                <p className="carousel__description">
-                  {videos[currentIndex].description}
-                </p>
               </div>
 
               <div className="carousel__controls">
