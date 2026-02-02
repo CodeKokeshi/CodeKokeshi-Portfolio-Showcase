@@ -20,6 +20,7 @@ const videos = [
     title: 'Metroidvania Project',
     isHero: true,
     status: 'Current Project',
+    description: 'An attempt to create a metroidvania inspired by Adventure Island',
   },
   
   // Pairs
@@ -29,6 +30,7 @@ const videos = [
     tool: 'Godot',
     title: 'Trapped in a Nightmare',
     status: 'Completed',
+    description: 'A top-down adventure/puzzle game similar to Zelda or Hyper Light Drifter',
   },
   {
     id: 4,
@@ -36,6 +38,7 @@ const videos = [
     tool: 'Unity',
     title: 'Chrono Plasmorph Remastered',
     status: 'Completed',
+    description: 'My first serious attempt at game dev - a platformer obstacle course',
   },
   {
     id: 9,
@@ -43,6 +46,7 @@ const videos = [
     tool: 'Python',
     title: 'Kokesprite',
     status: 'In Progress',
+    description: 'An attempt to recreate Aseprite tailored to my preferences, built with PyQt6',
   },
   {
     id: 11,
@@ -50,6 +54,7 @@ const videos = [
     tool: 'Godot',
     title: 'Chrono Plasmorph Remake',
     status: 'In Progress',
+    description: 'A remake with full-body sprites and smoother movements',
   },
   {
     id: 12,
@@ -57,6 +62,7 @@ const videos = [
     tool: 'Godot',
     title: 'Heavy Knight',
     status: 'In Progress',
+    description: "A quick game where your heavy knight can't jump and destroys floors when falling",
   },
   {
     id: 13,
@@ -64,6 +70,7 @@ const videos = [
     tool: 'Godot',
     title: 'True Top Down Demo',
     status: 'In Progress',
+    description: 'A true top-down shooter similar to Intravenous with shoot, roll, knife, and hide mechanics',
   },
   {
     id: 14,
@@ -71,6 +78,7 @@ const videos = [
     tool: 'Godot',
     title: 'Yet Another Platformer',
     status: 'In Progress',
+    description: 'An attempt to recreate Chrono Plasmorph in Godot (abandoned)',
   },
   {
     id: 7,
@@ -78,6 +86,7 @@ const videos = [
     tool: 'Unity',
     title: 'Flappy Bird Compilation',
     status: 'Completed',
+    description: 'The start of my game dev journey - a quick game attempt',
   },
   {
     id: 2,
@@ -85,6 +94,7 @@ const videos = [
     tool: 'Unity',
     title: 'Chrono Plasmorph Beta',
     status: 'Completed',
+    description: 'A pink-themed platformer using downloaded assets',
   },
   {
     id: 3,
@@ -92,6 +102,7 @@ const videos = [
     tool: 'Unity',
     title: '3D Reality Check',
     status: 'Completed',
+    description: 'My first and last 3D game - a massive mistake after learning Flappy Bird',
   },
   {
     id: 5,
@@ -99,6 +110,7 @@ const videos = [
     tool: 'RPG Maker',
     title: 'Pokemon Fan Game',
     status: 'Completed',
+    description: 'A Pokemon Essentials game featuring 6 choosable characters from BW, BW2, and HeartGold',
   },
   {
     id: 1,
@@ -106,6 +118,7 @@ const videos = [
     tool: 'RPG Maker',
     title: 'First Steps in Game Dev',
     status: 'Completed',
+    description: 'My first game dev attempt with intro, cutscenes, and quest lists (2022)',
   },
 
   // BOTTOM (full width - the odd one out)
@@ -116,6 +129,7 @@ const videos = [
     title: 'Platformer Refresher',
     isBottom: true,
     status: 'Completed',
+    description: 'A basic platformer with box sprites - my last Unity project before quitting for 6 months',
   },
 ]
 
@@ -278,8 +292,17 @@ function App() {
                 />
               </div>
               
-              <div className="carousel__counter">
-                {currentIndex + 1} / {videos.length}
+              <div className="carousel__info">
+                <div className="carousel__tool-tag" style={{
+                  backgroundColor: `${toolColors[videos[currentIndex].tool] || '#888'}22`,
+                  color: toolColors[videos[currentIndex].tool] || '#888',
+                  borderColor: `${toolColors[videos[currentIndex].tool] || '#888'}44`
+                }}>
+                  {videos[currentIndex].tool}
+                </div>
+                <p className="carousel__description">
+                  {videos[currentIndex].description}
+                </p>
               </div>
 
               <div className="carousel__controls">
@@ -290,6 +313,10 @@ function App() {
                 >
                   ‹
                 </button>
+                
+                <div className="carousel__counter">
+                  {currentIndex + 1} / {videos.length}
+                </div>
                 
                 <button 
                   className="carousel__btn carousel__btn--next" 
