@@ -2,12 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 // ============================================================================
-// PERFORMANCE UTILITIES
+// MOBILE DETECTION
 // ============================================================================
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
-let activeVideos = 0
-const MAX_CONCURRENT_VIDEOS = isMobile ? 2 : 4
+const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
 
 // ============================================================================
 // VIDEO DATA - Ordered by priority (Featured first, then Godot → Unity → RPG Maker)
@@ -137,62 +135,44 @@ interface VideoCardProps {
   video: typeof videos[0]
 }
 
-function VideoCard({ video }: VideoCardProps) {
+function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [canPlay, setCanPlay] = useState(false)
 
-  // Lazy load video and play/pause based on visibility
+  // Auto-play when active (for mobile carousel)
   useEffect(() => {
+    const vid = videoRef.current
+    if (!vid || !isActive) return
+
+    vid.play().catch(() => {})
+    
+    return () => {
+      vid.pause()
+      vid.currentTime = 0
+    }
+  }, [isActive])
+
+  // Desktop: Play/pause based on visibility
+  useEffect(() => {
+    if (isMobile()) return // Skip for mobile
+    
     const vid = videoRef.current
     if (!vid) return
 
-    let timeout: NodeJS.Timeout
-
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Load video when close to viewport
-        if (entry.isIntersecting && !isLoaded) {
-          vid.src = video.src
-          setIsLoaded(true)
-        }
-
-        // Clear any pending play
-        clearTimeout(timeout)
-
-        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          // Delay play to avoid spamming when scrolling fast
-          timeout = setTimeout(() => {
-            if (activeVideos < MAX_CONCURRENT_VIDEOS && canPlay) {
-              vid.play().then(() => {
-                activeVideos++
-              }).catch(() => {})
-            }
-          }, isMobile ? 300 : 100)
+        if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+          vid.play().catch(() => {})
         } else {
           vid.pause()
-          if (vid.currentTime > 0 && !vid.paused) {
-            activeVideos = Math.max(0, activeVideos - 1)
-          }
-          // Reset to start to save memory
-          if (!entry.isIntersecting) {
-            vid.currentTime = 0
-          }
         }
       },
-      { threshold: [0, 0.5] }
+      { threshold: [0, 0.3] }
     )
 
     observer.observe(vid)
-    return () => {
-      clearTimeout(timeout)
-      observer.disconnect()
-      if (vid && !vid.paused) {
-        activeVideos = Math.max(0, activeVideos - 1)
-      }
-    }
-  }, [video.src, isLoaded, canPlay])
+    return () => observer.disconnect()
+  }, [])
 
   const toolColor = toolColors[video.tool] || '#888'
 
@@ -226,14 +206,13 @@ function VideoCard({ video }: VideoCardProps) {
         <h3 className="card__title">{video.title}</h3>
         
         <div className="card__tags">
-          <span 
-            className="card__tag"
-            style={{ 
-              backgroundColor: `${toolColor}22`,
-              color: toolColor,
-              borderColor: `${toolColor}44`
-            }}
-          >
+        src={video.src}
+        muted
+        loop
+        playsInline
+        preload={isActive ? "auto" : "none"}
+        disablePictureInPicture
+        controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
             {video.tool}
           </span>
         </div>
@@ -255,6 +234,25 @@ function VideoCard({ video }: VideoCardProps) {
 
 function App() {
   return (
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [mobile, setMobile] = useState(isMobile())
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => setMobile(isMobile())
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? videos.length - 1 : prev - 1))
+  }
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev === videos.length - 1 ? 0 : prev + 1))
+  }
+
+  return (
     <div className="app">
       {/* Header */}
       <header className="header">
@@ -270,13 +268,45 @@ function App() {
       {/* Main */}
       <main className="main">
         <div className="container">
-          {/* Gallery */}
-          <div className="gallery">
-            {videos.map((video) => (
-              <VideoCard key={video.id} video={video} />
-            ))}
-          </div>
-        </div>
+          {mobile ? (
+            // Mobile: Carousel/Slideshow
+            <div className="carousel">
+              <div className="carousel__content">
+                <VideoCard 
+                  key={videos[currentIndex].id} 
+                  video={videos[currentIndex]} 
+                  isActive={true}
+                />
+              </div>
+              
+              <button 
+                className="carousel__btn carousel__btn--prev" 
+                onClick={handlePrev}
+                aria-label="Previous video"
+              >
+                ‹
+              </button>
+              
+              <button 
+                className="carousel__btn carousel__btn--next" 
+                onClick={handleNext}
+                aria-label="Next video"
+              >
+                ›
+              </button>
+
+              <div className="carousel__counter">
+                {currentIndex + 1} / {videos.length}
+              </div>
+            </div>
+          ) : (
+            // Desktop: Grid Gallery
+            <div className="gallery">
+              {videos.map((video) => (
+                <VideoCard key={video.id} video={video} />
+              ))}
+            </div>
+          )}
       </main>
 
       {/* Footer */}

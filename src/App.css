@@ -97,18 +97,99 @@
 }
 
 /* ============================================================================
-   GALLERY GRID - 2 columns, 16:9 cards
+   GALLERY GRID - 2 columns, 16:9 cards (DESKTOP ONLY)
    ============================================================================ */
 
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  display: none;
 }
 
 @media (min-width: 768px) {
   .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+  }
+}
+
+/* ============================================================================
+   CAROUSEL - Mobile slideshow (one video at a time)
+   ============================================================================ */
+
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.carousel__content {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+/* Full-width cards in carousel */
+.carousel .card {
+  width: 100%;
+  height: 100%;
+}
+
+/* Navigation buttons */
+.carousel__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 32px;
+  font-weight: 300;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.carousel__btn:active {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel__btn--prev {
+  left: 12px;
+}
+
+.carousel__btn--next {
+  right: 12px;
+}
+
+/* Counter */
+.carousel__counter {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .carousel {
+    display: none;
   }
 }
 
