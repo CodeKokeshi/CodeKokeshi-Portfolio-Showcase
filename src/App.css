@@ -163,6 +163,50 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
+/* Read More button */
+.carousel__read-more {
+  margin-top: 8px;
+  padding: 6px 16px;
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 6px;
+  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.carousel__read-more:active {
+  background: rgba(139, 92, 246, 0.3);
+  transform: scale(0.98);
+}
+
+/* Story section */
+.carousel__story {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 2px solid rgba(139, 92, 246, 0.5);
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Controls container - counter with arrows on both sides */
 .carousel__controls {
   display: flex;

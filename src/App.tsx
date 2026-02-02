@@ -21,6 +21,7 @@ const videos = [
     isHero: true,
     status: 'Current Project',
     description: 'An attempt to create a metroidvania inspired by Adventure Island',
+    story: "This isn't the classic Adventure Island - it's a full metroidvania. The only Adventure Island elements are the MC having a cap, being naked with green shorts, and fighting a giant snail. But our metroidvania has lightning powers, portals, fireballs, and so much more. This project evolved from the Chrono Plasmorph Remake.",
   },
   
   // Pairs
@@ -31,14 +32,16 @@ const videos = [
     title: 'Trapped in a Nightmare',
     status: 'Completed',
     description: 'A top-down adventure/puzzle game similar to Zelda or Hyper Light Drifter',
+    story: "My first complete game after returning to game dev in Godot. An adventure/puzzle/hack-and-slash top-down game where you explore an abandoned facility filled with slimes. Worked non-stop for 2 months: spent 1 month on the original True Top Down version with SVG animations (too tedious, quit), then restarted with 1 month left. Learned pixel art and animation from scratch to create a complete 6-hour game.",
   },
   {
     id: 4,
     src: '/videos/004%20Unity%20-%202D%20Platformer%20(Obstacle%20Course)%20-%20A%20Graphic%20Overhaul%20of%20Chrono%20Plasmorph%20Beta.mp4',
     tool: 'Unity',
-    title: 'Chrono Plasmorph Remastered',
+    title: 'Chrono Plasmorph',
     status: 'Completed',
     description: 'My first serious attempt at game dev - a platformer obstacle course',
+    story: "This is Chrono Plasmorph, my first official attempt at serious game development. It's a platformer obstacle course game. This version has a graphic overhaul from the Beta version - using better assets and a dark theme instead of the pink theme from Beta.",
   },
   {
     id: 9,
@@ -47,6 +50,7 @@ const videos = [
     title: 'Kokesprite',
     status: 'In Progress',
     description: 'An attempt to recreate Aseprite tailored to my preferences, built with PyQt6',
+    story: "A pixel art editor built from scratch using PyQt6. This is my attempt to recreate Aseprite but tailored specifically to my desires and workflow preferences. It's a non-game project that explores GUI development and tool creation.",
   },
   {
     id: 11,
@@ -55,6 +59,7 @@ const videos = [
     title: 'Chrono Plasmorph Remake',
     status: 'In Progress',
     description: 'A remake with full-body sprites and smoother movements',
+    story: "Unlike the original which used premade chibi assets, this remake features full-body sprites with smoother movements. Development only reached the platformer movement stage before evolving into the current Metroidvania project. This was the bridge between my Unity past and my Godot future.",
   },
   {
     id: 12,
@@ -63,6 +68,7 @@ const videos = [
     title: 'Heavy Knight',
     status: 'In Progress',
     description: "A quick game where your heavy knight can't jump and destroys floors when falling",
+    story: "An attempt at making a quick game with a unique twist: your knight is so heavy that it can't jump, and when it falls, it destroys the floor beneath it. A simple concept exploring physics-based platforming challenges.",
   },
   {
     id: 13,
@@ -71,6 +77,7 @@ const videos = [
     title: 'True Top Down Demo',
     status: 'In Progress',
     description: 'A true top-down shooter similar to Intravenous with shoot, roll, knife, and hide mechanics',
+    story: "The original version of Trapped in a Nightmare, but instead of pixel art, this one used original hand-drawn animation retraced in SVG for high-quality sprites. A true top-down game similar to Intravenous. So far it has shoot, roll, knife attack, and hide mechanics. I abandoned this version because SVG animations were too tedious, and restarted the project as pixel art.",
   },
   {
     id: 14,
@@ -79,6 +86,7 @@ const videos = [
     title: 'Yet Another Platformer',
     status: 'In Progress',
     description: 'An attempt to recreate Chrono Plasmorph in Godot (abandoned)',
+    story: "This was my attempt to recreate (not remake) Chrono Plasmorph from Unity to Godot when I first started learning the engine. Eventually abandoned it in favor of other projects.",
   },
   {
     id: 7,
@@ -86,7 +94,8 @@ const videos = [
     tool: 'Unity',
     title: 'Flappy Bird Compilation',
     status: 'Completed',
-    description: 'The start of my game dev journey - a quick game attempt',
+    description: 'My Unity game dev journey demonstrated in Flappy Bird',
+    story: "This compilation contains 3 Flappy Bird games showing my Unity learning progression. First: a tutorial-based version where I learned the basics. Second: a personal attempt without tutorials, featuring my first try at animation. Third: the final attempt using a pixel art tool for the first time, with real personal assets and proper animations. This was the start of my game dev journey.",
   },
   {
     id: 2,
@@ -95,6 +104,7 @@ const videos = [
     title: 'Chrono Plasmorph Beta',
     status: 'Completed',
     description: 'A pink-themed platformer using downloaded assets',
+    story: "This is the original Chrono Plasmorph Beta - essentially the same game as the remastered version, but using downloaded assets instead of custom ones. Features a pink theme instead of the dark theme you see in the remake.",
   },
   {
     id: 3,
@@ -103,6 +113,7 @@ const videos = [
     title: '3D Reality Check',
     status: 'Completed',
     description: 'My first and last 3D game - a massive mistake after learning Flappy Bird',
+    story: "Right after learning how to make Flappy Bird, I jumped straight into 3D game development. This was a massive mistake and a harsh reality check. It was my first and last 3D game - I quickly realized I needed to master 2D first.",
   },
   {
     id: 5,
@@ -111,6 +122,7 @@ const videos = [
     title: 'Pokemon Fan Game',
     status: 'Completed',
     description: 'A Pokemon Essentials game featuring 6 choosable characters from BW, BW2, and HeartGold',
+    story: "An attempt to reenter the Pokemon fan game scene, but this time through RPG Maker and Pokemon Essentials instead of ROM hacking. The main feature I'm proud of: 6 choosable characters all together in one game, pulled from Pokemon Black/White, Black/White 2, and HeartGold/SoulSilver.",
   },
   {
     id: 1,
@@ -119,6 +131,7 @@ const videos = [
     title: 'First Steps in Game Dev',
     status: 'Completed',
     description: 'My first game dev attempt with intro, cutscenes, and quest lists (2022)',
+    story: "Actually my very first attempt at game development, though I don't consider it official. Made in 2022, I created the intro, cutscenes, and quest lists for this mystery RPG Maker game. But it sucked and didn't progress beyond that. I resumed serious game dev in 2024 to learn Unity.",
   },
 
   // BOTTOM (full width - the odd one out)
@@ -130,6 +143,7 @@ const videos = [
     isBottom: true,
     status: 'Completed',
     description: 'A basic platformer with box sprites - my last Unity project before quitting for 6 months',
+    story: "A basic platformer where the sprites are just boxes with faces. This was my last Unity project before I quit game dev for 6 months. After this, I had a game dev program/course in college (second semester, 3rd year as a Computer Science student), which reignited my passion and led me to switch to Godot.",
   },
 ]
 
@@ -249,6 +263,7 @@ function VideoCard({ video, isActive = true }: VideoCardProps & { isActive?: boo
 function App() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [mobile, setMobile] = useState(isMobile())
+  const [showStory, setShowStory] = useState(false)
 
   // Handle window resize
   useEffect(() => {
@@ -256,6 +271,11 @@ function App() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  // Reset story when changing videos
+  useEffect(() => {
+    setShowStory(false)
+  }, [currentIndex])
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? videos.length - 1 : prev - 1))
@@ -297,6 +317,21 @@ function App() {
                   backgroundColor: `${toolColors[videos[currentIndex].tool] || '#888'}22`,
                   color: toolColors[videos[currentIndex].tool] || '#888',
                   borderColor: `${toolColors[videos[currentIndex].tool] || '#888'}44`
+                {videos[currentIndex].story && (
+                  <>
+                    <button 
+                      className="carousel__read-more"
+                      onClick={() => setShowStory(!showStory)}
+                    >
+                      {showStory ? 'Read Less' : 'Read More'}
+                    </button>
+                    {showStory && (
+                      <div className="carousel__story">
+                        {videos[currentIndex].story}
+                      </div>
+                    )}
+                  </>
+                )}
                 }}>
                   {videos[currentIndex].tool}
                 </div>
