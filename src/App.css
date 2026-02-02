@@ -144,10 +144,24 @@
   object-fit: cover;
   transition: transform 0.6s ease;
   pointer-events: none;
+  will-change: transform;
 }
 
-.card:hover .card__video {
-  transform: scale(1.05);
+/* Disable expensive transform on mobile */
+@media (max-width: 767px) {
+  .card__video {
+    transition: none;
+  }
+  
+  .card:hover .card__video {
+    transform: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .card:hover .card__video {
+    transform: scale(1.05);
+  }
 }
 
 /* NUKE ALL VIDEO CONTROLS */
@@ -198,8 +212,14 @@
     rgba(0,0,0,0) 100%
   );
   opacity: 0;
-  transition: opacity 0.4s ease;
   pointer-events: none;
+}
+
+/* Desktop only: add transition */
+@media (min-width: 768px) {
+  .card__overlay {
+    transition: opacity 0.4s ease;
+  }
 }
 
 .card__overlay--visible {
@@ -214,15 +234,24 @@
   bottom: 0;
   padding: 20px;
   opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.4s ease;
   pointer-events: none;
   z-index: 10;
 }
 
+/* Desktop only: add transform transition */
+@media (min-width: 768px) {
+  .card__info {
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+  }
+  
+  .card__info--visible {
+    transform: translateY(0);
+  }
+}
+
 .card__info--visible {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .card__title {
@@ -263,7 +292,13 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border: 1px solid;
-  backdrop-filter: blur(8px);
+}
+
+/* Only add blur on desktop */
+@media (min-width: 768px) {
+  .card__tag {
+    backdrop-filter: blur(8px);
+  }
 }
 
 /* Status badges */
@@ -305,19 +340,31 @@
 /* Current Project badge - green gradient */
 .card__badge--current-project {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
 }
 
 /* Completed badge - blue/purple gradient */
 .card__badge--completed {
   background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 /* In Progress badge - yellow/orange gradient */
 .card__badge--in-progress {
   background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+/* Desktop only: add glowing shadows */
+@media (min-width: 768px) {
+  .card__badge--current-project {
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  }
+  
+  .card__badge--completed {
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  }
+  
+  .card__badge--in-progress {
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+  }
 }
 
 @media (min-width: 768px) {

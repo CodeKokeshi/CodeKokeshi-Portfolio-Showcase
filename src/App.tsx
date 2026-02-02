@@ -2,6 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 // ============================================================================
+// PERFORMANCE UTILITIES
+// ============================================================================
+
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
+let activeVideos = 0
+const MAX_CONCURRENT_VIDEOS = isMobile ? 2 : 4
+
+// ============================================================================
 // VIDEO DATA - Ordered by priority (Featured first, then Godot → Unity → RPG Maker)
 // ============================================================================
 
@@ -132,26 +140,59 @@ interface VideoCardProps {
 function VideoCard({ video }: VideoCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [canPlay, setCanPlay] = useState(false)
 
-  // Play/pause based on visibility
+  // Lazy load video and play/pause based on visibility
   useEffect(() => {
     const vid = videoRef.current
     if (!vid) return
 
+    let timeout: NodeJS.Timeout
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          vid.play().catch(() => {})
+        // Load video when close to viewport
+        if (entry.isIntersecting && !isLoaded) {
+          vid.src = video.src
+          setIsLoaded(true)
+        }
+
+        // Clear any pending play
+        clearTimeout(timeout)
+
+        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          // Delay play to avoid spamming when scrolling fast
+          timeout = setTimeout(() => {
+            if (activeVideos < MAX_CONCURRENT_VIDEOS && canPlay) {
+              vid.play().then(() => {
+                activeVideos++
+              }).catch(() => {})
+            }
+          }, isMobile ? 300 : 100)
         } else {
           vid.pause()
+          if (vid.currentTime > 0 && !vid.paused) {
+            activeVideos = Math.max(0, activeVideos - 1)
+          }
+          // Reset to start to save memory
+          if (!entry.isIntersecting) {
+            vid.currentTime = 0
+          }
         }
       },
-      { threshold: 0.2 }
+      { threshold: [0, 0.5] }
     )
 
     observer.observe(vid)
-    return () => observer.disconnect()
-  }, [])
+    return () => {
+      clearTimeout(timeout)
+      observer.disconnect()
+      if (vid && !vid.paused) {
+        activeVideos = Math.max(0, activeVideos - 1)
+      }
+    }
+  }, [video.src, isLoaded, canPlay])
 
   const toolColor = toolColors[video.tool] || '#888'
 
@@ -167,13 +208,14 @@ function VideoCard({ video }: VideoCardProps) {
       <video
         ref={videoRef}
         className="card__video"
-        src={video.src}
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         disablePictureInPicture
         controlsList="nodownload nofullscreen noremoteplayback noplaybackrate"
+        onCanPlay={() => setCanPlay(true)}
+        onError={() => setCanPlay(false)}
       />
 
       {/* Gradient overlay */}
