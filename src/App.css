@@ -392,17 +392,17 @@
   z-index: 10;
 }
 
-/* Larger badges for full-width cards and desktop */
-.card--full .card__badge {
-  top: 16px;
-  left: 16px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-}
-
+/* Desktop: Larger badges for full-width cards */
 @media (min-width: 768px) {
+  .card--full .card__badge {
+    top: 16px;
+    left: 16px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
   .card__badge {
     top: 16px;
     left: 16px;
