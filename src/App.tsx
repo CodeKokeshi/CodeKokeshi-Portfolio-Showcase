@@ -226,6 +226,77 @@ const artworks: Artwork[] = [
   { id: 10, src: '/artworks/takahama_reiko_fully_colorized_by_codekokeshi_dk10lby-pre.jpg', isGif: false },
 ]
 
+// ============================================================================
+// MOD DATA - For Stardew Valley Mods section
+// ============================================================================
+
+interface Mod {
+  id: number
+  image: string
+  title: string
+  overview: string
+  link: string
+}
+
+const mods: Mod[] = [
+  {
+    id: 1,
+    image: '/mods/Bountiful Foraging.webp',
+    title: 'Bountiful Foraging',
+    overview: "Make forageables bountiful literally, like in the Beach alone you'll get 50 shells or something. Or on the way to the mountains you'll get 100 grapes on the way. But that depends on your multiplier. Let's say that this is a forage items amount multiplier.",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41289'
+  },
+  {
+    id: 2,
+    image: '/mods/Helpful Pets.webp',
+    title: 'Helpful Pets',
+    overview: "Useful pets. Helpful pets. Worker pets. Working pets. Whatever you call it! You can make your pets clear debris, chop trees, destroy boulders (by configuring it in GMCM). Make it follow you around town! Or let it explore the valley and forage for you. You can call it by whistling (default key: V but configurable).",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41161'
+  },
+  {
+    id: 3,
+    image: '/mods/Fix Museum Inventory.webp',
+    title: 'Fix Museum Inventory',
+    overview: "Rewrote the vanilla museum inventory code to fix various issues like inventory UI covering the museum slots. Added a move button to move the inventory UI around and removed the inventory on the arrangement mode.",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41132'
+  },
+  {
+    id: 4,
+    image: '/mods/Instant Fish Bite.webp',
+    title: 'Instant Fish Bite',
+    overview: "Fish instantly bites eliminating the waiting game.",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41102'
+  },
+  {
+    id: 5,
+    image: '/mods/Max Quality Items.webp',
+    title: 'Max Quality Items',
+    overview: "Make all items iridium quality by pressing F9 while inventory / chest is opened. F9 key is replaceable in the Mod Options of GMCM.",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41507'
+  },
+  {
+    id: 6,
+    image: '/mods/Bypass All Doors.webp',
+    title: 'Bypass All Doors',
+    overview: "Access every doors! Friendship locked? Schedule? Ignore all that!",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41105'
+  },
+  {
+    id: 7,
+    image: '/mods/Infinite Stamina.webp',
+    title: 'Infinite Stamina',
+    overview: "Keeps the stamina at max value basically making it infinite.",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41065'
+  },
+  {
+    id: 8,
+    image: '/mods/Buy Animals Fully Mature.webp',
+    title: 'Buy Animals Fully Mature',
+    overview: "Purchased barn/coop animals are instantly fully matured and ready to produce products.",
+    link: 'https://www.nexusmods.com/stardewvalley/mods/41509'
+  },
+]
+
 // Tool/Engine colors
 const toolColors: Record<string, string> = {
   'RPG Maker': '#4ade80',
@@ -418,50 +489,17 @@ function PlaceholderSection({ title, description }: PlaceholderSectionProps) {
 
 interface ArtworkItemProps {
   artwork: Artwork
-  mobile: boolean
 }
 
-function ArtworkItem({ artwork, mobile }: ArtworkItemProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const imgRef = useRef<HTMLImageElement>(null)
-
-  // For GIFs: show static image by default, swap to GIF on interaction
-  const currentSrc = artwork.isGif 
-    ? (isPlaying ? artwork.src : (artwork.staticSrc || artwork.src))
-    : artwork.src
-
-  const handleMouseEnter = () => {
-    if (!mobile && artwork.isGif) {
-      setIsPlaying(true)
-    }
-  }
-
-  const handleMouseLeave = () => {
-    if (!mobile && artwork.isGif) {
-      setIsPlaying(false)
-    }
-  }
-
-  const handleClick = () => {
-    if (mobile && artwork.isGif) {
-      setIsPlaying(!isPlaying)
-    }
-  }
-
+function ArtworkItem({ artwork }: ArtworkItemProps) {
   return (
-    <div 
-      className={`masonry__item ${artwork.isGif ? 'masonry__item--gif' : ''} ${isPlaying ? 'masonry__item--playing' : ''}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
+    <div className="masonry__item">
       <img 
-        ref={imgRef}
-        src={currentSrc} 
+        src={artwork.src} 
         alt=""
         loading="lazy"
       />
-      {artwork.isGif && !isPlaying && (
+      {artwork.isGif && (
         <div className="masonry__gif-badge">GIF</div>
       )}
     </div>
@@ -472,11 +510,7 @@ function ArtworkItem({ artwork, mobile }: ArtworkItemProps) {
 // ARTS SECTION COMPONENT
 // ============================================================================
 
-interface ArtsSectionProps {
-  mobile: boolean
-}
-
-function ArtsSection({ mobile }: ArtsSectionProps) {
+function ArtsSection() {
   if (artworks.length === 0) {
     return (
       <PlaceholderSection
@@ -489,7 +523,64 @@ function ArtsSection({ mobile }: ArtsSectionProps) {
   return (
     <div className="masonry">
       {artworks.map((artwork) => (
-        <ArtworkItem key={artwork.id} artwork={artwork} mobile={mobile} />
+        <ArtworkItem key={artwork.id} artwork={artwork} />
+      ))}
+    </div>
+  )
+}
+
+// ============================================================================
+// MOD CARD COMPONENT
+// ============================================================================
+
+interface ModCardProps {
+  mod: Mod
+}
+
+function ModCard({ mod }: ModCardProps) {
+  return (
+    <div className="mod-card">
+      <div className="mod-card__image">
+        <img 
+          src={mod.image} 
+          alt={mod.title}
+          loading="lazy"
+        />
+      </div>
+      <div className="mod-card__content">
+        <h3 className="mod-card__title">{mod.title}</h3>
+        <p className="mod-card__overview">{mod.overview}</p>
+        <a 
+          href={mod.link} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="mod-card__link"
+        >
+          View Mod on NexusMods →
+        </a>
+      </div>
+    </div>
+  )
+}
+
+// ============================================================================
+// MODS SECTION COMPONENT
+// ============================================================================
+
+function ModsSection() {
+  if (mods.length === 0) {
+    return (
+      <PlaceholderSection
+        title="Stardew Valley Mods"
+        description="Coming soon - custom mods for Stardew Valley will be showcased here."
+      />
+    )
+  }
+
+  return (
+    <div className="mods-masonry">
+      {mods.map((mod) => (
+        <ModCard key={mod.id} mod={mod} />
       ))}
     </div>
   )
@@ -693,7 +784,7 @@ function App() {
           />
         )
       case 'arts':
-        return <ArtsSection mobile={mobile} />
+        return <ArtsSection />
       case 'software':
         return (
           <PlaceholderSection
@@ -702,27 +793,36 @@ function App() {
           />
         )
       case 'mods':
-        return (
-          <PlaceholderSection
-            title="Stardew Valley Mods"
-            description="Coming soon - custom mods for Stardew Valley will be showcased here."
-          />
-        )
+        return <ModsSection />
       case 'about':
         return (
           <div className="about-section">
             <h2 className="about-section__title">About Me</h2>
-            <p className="about-section__text">
-              Hi! I'm CodeKokeshi, a game developer and programmer. I started my journey in game development 
-              with RPG Maker, moved to Unity, and eventually found my home in Godot.
-            </p>
-            <a href="#/timeline" className="timeline-link timeline-link--about">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              View My Game Dev Timeline
-            </a>
+            <div className="about-section__text">
+              <p>Hi! I'm CodeKokeshi, a game developer, programmer, artist, and mod creator.</p>
+              <p>I started my journey in game development with RPG Maker, moved to Unity, and eventually found my home in Godot.</p>
+              <p>As a programmer, I work on web development and software development, specializing in Lenet-5 CNN and machine learning applications.</p>
+              <p>My artistic skills span SVG art, pixel art, and digital art, with animation capabilities across all these mediums.</p>
+              <p>I'm also an active mod maker, focusing primarily on creating quality-of-life mods for Stardew Valley.</p>
+            </div>
+            <h3 className="about-section__links-title">Links</h3>
+            <div className="about-section__links">
+              <a href="#/timeline" className="timeline-link timeline-link--about">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                View My Game Dev Timeline
+              </a>
+              <a href="https://www.nexusmods.com/profile/CodeKokeshi" target="_blank" rel="noopener noreferrer" className="timeline-link timeline-link--about">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+                View My NexusMods Profile
+              </a>
+            </div>
           </div>
         )
       default:
