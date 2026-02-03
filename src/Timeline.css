@@ -50,28 +50,6 @@
   margin-top: 8px;
 }
 
-.timeline-relationships-btn {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 10px 20px;
-  background: linear-gradient(135deg, rgba(71, 140, 191, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
-  border: 1px solid rgba(71, 140, 191, 0.3);
-  border-radius: 8px;
-  color: #478cbf;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.timeline-relationships-btn:hover {
-  background: linear-gradient(135deg, rgba(71, 140, 191, 0.25) 0%, rgba(16, 185, 129, 0.25) 100%);
-  border-color: rgba(16, 185, 129, 0.5);
-  color: #10b981;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(16, 185, 129, 0.2);
-}
-
 /* ============================================================================
    LEGEND
    ============================================================================ */
@@ -438,7 +416,216 @@
 }
 
 /* ============================================================================
-   MOBILE STYLES
+   MOBILE VERTICAL TIMELINE
+   ============================================================================ */
+
+.timeline-vertical {
+  display: none;
+  padding: 20px 16px 40px 16px;
+}
+
+@media (max-width: 768px) {
+  .timeline-vertical {
+    display: block;
+  }
+  
+  .timeline-container {
+    display: none;
+  }
+}
+
+.timeline-vertical__item {
+  position: relative;
+  padding-left: 32px;
+  padding-bottom: 24px;
+  cursor: pointer;
+}
+
+.timeline-vertical__item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-vertical__line {
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--item-color) 0%, var(--item-color) 100%);
+}
+
+.timeline-vertical__item:last-child .timeline-vertical__line {
+  height: 16px;
+}
+
+.timeline-vertical__dot {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  background: var(--item-color);
+  border-radius: 50%;
+  border: 3px solid #0a0a0a;
+  box-shadow: 0 0 0 2px var(--item-color);
+  z-index: 2;
+}
+
+.timeline-vertical__item--era .timeline-vertical__dot {
+  width: 20px;
+  height: 20px;
+  left: -2px;
+}
+
+.timeline-vertical__item--milestone .timeline-vertical__dot {
+  border-radius: 3px;
+  transform: rotate(45deg);
+}
+
+.timeline-vertical__content {
+  background: #151515;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid #2a2a2a;
+  transition: all 0.2s ease;
+}
+
+.timeline-vertical__item:active .timeline-vertical__content {
+  background: #1a1a1a;
+  border-color: var(--item-color);
+}
+
+.timeline-vertical__year {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--item-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.timeline-vertical__content h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 4px 0 6px 0;
+  color: #fff;
+}
+
+.timeline-vertical__content p {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ============================================================================
+   MOBILE DETAIL PANEL (YouTube-style)
+   ============================================================================ */
+
+.timeline-detail--mobile {
+  padding: 0;
+  align-items: flex-start;
+  background: #0a0a0a;
+}
+
+.timeline-detail--mobile .timeline-detail__content {
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.25s ease;
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.timeline-detail--mobile .timeline-detail__close {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: auto;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-detail--mobile .timeline-detail__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.timeline-detail--mobile .timeline-detail__video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.timeline-detail--mobile .timeline-detail__embed {
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  flex-shrink: 0;
+}
+
+.timeline-detail--mobile .timeline-detail__embed iframe {
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+.timeline-detail--mobile .timeline-detail__info {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  background: #0a0a0a;
+}
+
+.timeline-detail__info {
+  /* Default for desktop - no special styling needed */
+}
+
+.timeline-detail--mobile .timeline-detail__year {
+  font-size: 12px;
+}
+
+.timeline-detail--mobile .timeline-detail__content h2 {
+  font-size: 18px;
+  margin: 6px 0 10px 0;
+  padding-right: 0;
+}
+
+.timeline-detail--mobile .timeline-detail__desc {
+  font-size: 13px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+}
+
+.timeline-detail--mobile .timeline-detail__story {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ============================================================================
+   MOBILE STYLES - Header and Legend
    ============================================================================ */
 
 @media (max-width: 768px) {
@@ -460,51 +647,17 @@
   }
   
   .timeline-legend {
-    gap: 12px;
-    padding: 12px;
+    gap: 8px 16px;
+    padding: 12px 16px;
   }
   
   .legend-item {
     font-size: 10px;
   }
-  
-  .timeline-track {
-    padding: 120px 50px;
-  }
-  
-  .timeline-item {
-    min-width: 120px;
-  }
-  
-  .timeline-item__card {
-    width: 130px;
-    padding: 10px;
-  }
-  
-  .timeline-item__card h3 {
-    font-size: 11px;
-  }
-  
-  .timeline-item__card p {
-    font-size: 10px;
-  }
-  
-  .timeline-detail__content {
-    padding: 24px;
-  }
-  
-  .timeline-detail__content h2 {
-    font-size: 20px;
-    padding-right: 30px;
-  }
-  
-  .timeline-detail__story {
-    font-size: 14px;
-  }
 }
 
 /* ============================================================================
-   SCROLL HINT ANIMATION
+   SCROLL HINT ANIMATION (Desktop only)
    ============================================================================ */
 
 .timeline-container::after {
@@ -522,5 +675,11 @@
 @keyframes pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .timeline-container::after {
+    display: none;
+  }
 }
 

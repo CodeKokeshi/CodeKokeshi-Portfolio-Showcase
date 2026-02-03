@@ -57,22 +57,46 @@
   }
 }
 
-.header__nav-link {
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: #888;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+/* Desktop Navigation */
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.header__nav-link:hover {
+.header__nav-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.header__nav-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.header__nav-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header__nav-btn--active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.2) 100%);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.header__nav-btn--active:hover {
+  color: #a78bfa;
 }
 
 .logo {
@@ -124,7 +148,7 @@
 }
 
 /* ============================================================================
-   GALLERY GRID - 2 columns, 16:9 cards (DESKTOP ONLY)
+   GALLERY - Single column layout (DESKTOP ONLY)
    ============================================================================ */
 
 .gallery {
@@ -133,10 +157,39 @@
 
 @media (min-width: 768px) {
   .gallery {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
   }
+}
+
+/* ============================================================================
+   SECTION - Category sections with title and grid
+   ============================================================================ */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section__title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+  background: linear-gradient(90deg, #a78bfa 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* ============================================================================
@@ -190,24 +243,18 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* Read More button */
+/* Read More text link */
 .carousel__read-more {
-  margin-top: 8px;
-  padding: 6px 16px;
-  background: rgba(139, 92, 246, 0.2);
-  border: 1px solid rgba(139, 92, 246, 0.4);
-  border-radius: 6px;
+  margin-top: 4px;
   color: #a78bfa;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  align-self: flex-start;
+  transition: color 0.2s ease;
+  display: inline;
 }
 
 .carousel__read-more:active {
-  background: rgba(139, 92, 246, 0.3);
-  transform: scale(0.98);
+  color: #8b5cf6;
 }
 
 /* Story section */
@@ -323,7 +370,7 @@
 }
 
 /* ============================================================================
-   VIDEO CARD - All 16:9 aspect ratio
+   VIDEO CARD - All 16:9 aspect ratio, single column
    ============================================================================ */
 
 .card {
@@ -335,16 +382,8 @@
   aspect-ratio: 16 / 9;
 }
 
-/* Full width cards (hero at top, leftover at bottom) */
-.card--full {
-  grid-column: 1 / -1;
-  aspect-ratio: 16 / 9;
-}
-
 /* Expanded card (clicked on desktop) */
 .card--expanded {
-  grid-column: 1 / -1;
-  aspect-ratio: 16 / 9;
   box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
   transform: scale(1.02);
   transition: all 0.3s ease;
@@ -486,30 +525,22 @@
 }
 
 .card__title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   margin: 0 0 10px 0;
   color: #fff;
 }
 
 .card__overview {
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.5;
   margin: 8px 0 0 0;
   color: rgba(255, 255, 255, 0.85);
 }
 
-.card--full .card__title {
-  font-size: 24px;
-}
-
 @media (min-width: 768px) {
   .card__title {
-    font-size: 18px;
-  }
-  
-  .card--full .card__title {
-    font-size: 32px;
+    font-size: 22px;
   }
 }
 
@@ -539,62 +570,6 @@
   }
 }
 
-/* Status badges - SMALL for paired cards (by 2s) */
-.card__badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #fff;
-  z-index: 10;
-}
-
-/* LARGER badges ONLY for full-width cards (by 1s: hero, bottom, expanded) */
-.card--full .card__badge,
-.card--expanded .card__badge {
-  top: 16px;
-  left: 16px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-}
-
-/* Current Project badge - green gradient */
-.card__badge--current-project {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-/* Completed badge - blue/purple gradient */
-.card__badge--completed {
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-}
-
-/* In Progress badge - yellow/orange gradient */
-.card__badge--in-progress {
-  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-}
-
-/* Desktop only: add glowing shadows */
-@media (min-width: 768px) {
-  .card__badge--current-project {
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-  }
-  
-  .card__badge--completed {
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-  }
-  
-  .card__badge--in-progress {
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-  }
-}
-
 /* Card border glow on hover */
 .card::after {
   content: '';
@@ -611,11 +586,165 @@
 }
 
 .card:hover::after {
-  border-color: rgba(255,255,255,0.15);
+  border-color: rgba(139, 92, 246, 0.4);
 }
 
-.card--full:hover::after {
-  border-color: rgba(139, 92, 246, 0.4);
+/* ============================================================================
+   MOBILE BOTTOM NAVIGATION
+   ============================================================================ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0 12px 0;
+  background: rgba(10, 10, 10, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.bottom-nav__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.bottom-nav__btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bottom-nav__btn span {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.bottom-nav__btn--active {
+  color: #a78bfa;
+}
+
+.bottom-nav__btn:active {
+  transform: scale(0.95);
+}
+
+/* Hide bottom nav on desktop */
+@media (min-width: 768px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   TIMELINE LINK
+   ============================================================================ */
+
+.timeline-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  margin-top: 24px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(236, 72, 153, 0.1) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  color: #a78bfa;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.timeline-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+.timeline-link:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(236, 72, 153, 0.15) 100%);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.timeline-link--about {
+  margin-top: 32px;
+}
+
+/* ============================================================================
+   PLACEHOLDER SECTION
+   ============================================================================ */
+
+.placeholder-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.placeholder-section__icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.placeholder-section__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder-section__title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.placeholder-section__description {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.4);
+  max-width: 400px;
+}
+
+/* ============================================================================
+   ABOUT SECTION
+   ============================================================================ */
+
+.about-section {
+  padding: 40px 0;
+}
+
+.about-section__title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+  background: linear-gradient(90deg, #a78bfa 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-section__text {
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ============================================================================
@@ -634,3 +763,133 @@
   color: rgba(255,255,255,0.3);
 }
 
+/* Mobile: Add bottom padding for bottom nav */
+@media (max-width: 767px) {
+  .main {
+    padding-bottom: 100px;
+  }
+}
+
+/* ============================================================================
+   MASONRY GRID (ARTS SECTION)
+   ============================================================================ */
+
+.masonry {
+  column-count: 2;
+  column-gap: 12px;
+  padding: 20px 0;
+}
+
+@media (min-width: 600px) {
+  .masonry {
+    column-count: 2;
+    column-gap: 24px;
+  }
+}
+
+@media (min-width: 900px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1200px) {
+  .masonry {
+    column-count: 3;
+  }
+}
+
+.masonry__item {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a1a1a;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (min-width: 600px) {
+  .masonry__item {
+    margin-bottom: 16px;
+  }
+}
+
+.masonry__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.masonry__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* GIF badge indicator */
+.masonry__gif-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+/* GIF item hover glow */
+.masonry__item--gif:hover {
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.4), 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Playing state indicator */
+.masonry__item--playing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(167, 139, 250, 0.6);
+  border-radius: 8px;
+  pointer-events: none;
+  animation: pulse-border 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: rgba(167, 139, 250, 0.6);
+  }
+  50% {
+    border-color: rgba(236, 72, 153, 0.6);
+  }
+}
+
+/* Mobile: tap to play hint */
+@media (max-width: 767px) {
+  .masonry__item--gif::before {
+    content: 'Tap to play';
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  
+  .masonry__item--gif:not(.masonry__item--playing)::before {
+    opacity: 1;
+  }
+  
+  .masonry__item--playing::before {
+    content: 'Tap to pause';
+  }
+}

@@ -2,6 +2,12 @@ import { useState, useRef, useEffect } from 'react'
 import './Timeline.css'
 
 // ============================================================================
+// MOBILE DETECTION
+// ============================================================================
+
+const isMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
+
+// ============================================================================
 // TIMELINE DATA
 // ============================================================================
 
@@ -260,14 +266,22 @@ const eraColors: Record<string, string> = {
 
 function Timeline() {
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null)
+  const [mobile, setMobile] = useState(isMobile())
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
 
-  // Drag to scroll handlers
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => setMobile(isMobile())
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Drag to scroll handlers (desktop only)
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!containerRef.current) return
+    if (mobile || !containerRef.current) return
     setIsDragging(true)
     setStartX(e.pageX - containerRef.current.offsetLeft)
     setScrollLeft(containerRef.current.scrollLeft)
@@ -296,16 +310,16 @@ function Timeline() {
     }
   }
 
-  // Touch handlers for mobile
+  // Touch handlers for desktop horizontal scroll
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (!containerRef.current) return
+    if (mobile || !containerRef.current) return
     setIsDragging(true)
     setStartX(e.touches[0].pageX - containerRef.current.offsetLeft)
     setScrollLeft(containerRef.current.scrollLeft)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !containerRef.current) return
+    if (mobile || !isDragging || !containerRef.current) return
     const x = e.touches[0].pageX - containerRef.current.offsetLeft
     const walk = (x - startX) * 2
     containerRef.current.scrollLeft = scrollLeft - walk
@@ -330,8 +344,7 @@ function Timeline() {
       <header className="timeline-header">
         <a href="#/" className="timeline-back">← Back to Portfolio</a>
         <h1>Game Dev Timeline</h1>
-        <p className="timeline-subtitle">Drag to scroll through my journey</p>
-        <a href="#/relationships" className="timeline-relationships-btn">View Project Relationships →</a>
+        <p className="timeline-subtitle">{mobile ? 'Scroll to explore' : 'Drag to scroll through my journey'}</p>
       </header>
 
       {/* Era Legend */}
@@ -343,50 +356,77 @@ function Timeline() {
         <span className="legend-item"><span className="legend-dot" style={{ background: '#10b981' }}></span>Current</span>
       </div>
 
-      {/* Timeline Container */}
-      <div 
-        className="timeline-container"
-        ref={containerRef}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className="timeline-track">
-          {/* Timeline Line */}
-          <div className="timeline-line"></div>
-          
-          {/* Timeline Items */}
-          {timelineData.map((item, index) => (
+      {mobile ? (
+        // Mobile: Vertical Timeline
+        <div className="timeline-vertical">
+          {timelineData.map((item) => (
             <div 
               key={item.id}
-              className={`timeline-item timeline-item--${item.type} ${selectedItem?.id === item.id ? 'timeline-item--selected' : ''}`}
-              style={{ 
-                '--item-color': eraColors[item.year] || '#888'
-              } as React.CSSProperties}
-              onClick={() => setSelectedItem(selectedItem?.id === item.id ? null : item)}
+              className={`timeline-vertical__item timeline-vertical__item--${item.type}`}
+              style={{ '--item-color': eraColors[item.year] || '#888' } as React.CSSProperties}
+              onClick={() => setSelectedItem(item)}
             >
-              <div className="timeline-item__dot"></div>
-              <div className="timeline-item__year">{item.year}</div>
-              <div className={`timeline-item__card ${index % 2 === 0 ? 'timeline-item__card--top' : 'timeline-item__card--bottom'}`}>
+              <div className="timeline-vertical__line"></div>
+              <div className="timeline-vertical__dot"></div>
+              <div className="timeline-vertical__content">
+                <span className="timeline-vertical__year">{item.year}</span>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      ) : (
+        // Desktop: Horizontal Timeline
+        <div 
+          className="timeline-container"
+          ref={containerRef}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="timeline-track">
+            {/* Timeline Line */}
+            <div className="timeline-line"></div>
+            
+            {/* Timeline Items */}
+            {timelineData.map((item, index) => (
+              <div 
+                key={item.id}
+                className={`timeline-item timeline-item--${item.type} ${selectedItem?.id === item.id ? 'timeline-item--selected' : ''}`}
+                style={{ 
+                  '--item-color': eraColors[item.year] || '#888'
+                } as React.CSSProperties}
+                onClick={() => setSelectedItem(selectedItem?.id === item.id ? null : item)}
+              >
+                <div className="timeline-item__dot"></div>
+                <div className="timeline-item__year">{item.year}</div>
+                <div className={`timeline-item__card ${index % 2 === 0 ? 'timeline-item__card--top' : 'timeline-item__card--bottom'}`}>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-
-
-      {/* Detail Panel */}
+      {/* Detail Panel - Different layout for mobile */}
       {selectedItem && (
-        <div className="timeline-detail" onClick={() => setSelectedItem(null)}>
+        <div className={`timeline-detail ${mobile ? 'timeline-detail--mobile' : ''}`} onClick={() => setSelectedItem(null)}>
           <div className="timeline-detail__content" onClick={(e) => e.stopPropagation()}>
-            <button className="timeline-detail__close" onClick={() => setSelectedItem(null)}>×</button>
+            {/* Close button */}
+            <button className="timeline-detail__close" onClick={() => setSelectedItem(null)}>
+              {mobile ? (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              ) : '×'}
+            </button>
             
             {/* Video/Embed at the top */}
             {selectedItem.video && (
@@ -418,10 +458,12 @@ function Timeline() {
               </div>
             )}
             
-            <span className="timeline-detail__year" style={{ color: eraColors[selectedItem.year] }}>{selectedItem.year}</span>
-            <h2>{selectedItem.title}</h2>
-            <p className="timeline-detail__desc">{selectedItem.description}</p>
-            <div className="timeline-detail__story">{selectedItem.story}</div>
+            <div className="timeline-detail__info">
+              <span className="timeline-detail__year" style={{ color: eraColors[selectedItem.year] }}>{selectedItem.year}</span>
+              <h2>{selectedItem.title}</h2>
+              <p className="timeline-detail__desc">{selectedItem.description}</p>
+              <div className="timeline-detail__story">{selectedItem.story}</div>
+            </div>
           </div>
         </div>
       )}
