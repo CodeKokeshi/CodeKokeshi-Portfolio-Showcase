@@ -646,7 +646,7 @@ function App() {
 
   // Reset story when changing videos
   useEffect(() => {
-    setShowStory(true)
+    setShowStory(false)
   }, [currentIndex])
 
   const handlePrev = () => {
