@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://codekokeshi-portfolio-showcase.netlify.app/sitemap.xml
