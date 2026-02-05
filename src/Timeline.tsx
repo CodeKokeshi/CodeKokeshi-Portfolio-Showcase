@@ -338,6 +338,18 @@ function Timeline() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  // Prevent background scrolling when detail is open
+  useEffect(() => {
+    if (selectedItem) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [selectedItem])
+
   return (
     <div className="timeline-page">
       {/* Header */}
@@ -458,7 +470,7 @@ function Timeline() {
               </div>
             )}
             
-            <div className="timeline-detail__info">
+            <div className={`timeline-detail__info ${mobile && !selectedItem.video && !selectedItem.embed ? 'timeline-detail__info--no-media' : ''}`}>
               <span className="timeline-detail__year" style={{ color: eraColors[selectedItem.year] }}>{selectedItem.year}</span>
               <h2>{selectedItem.title}</h2>
               <p className="timeline-detail__desc">{selectedItem.description}</p>

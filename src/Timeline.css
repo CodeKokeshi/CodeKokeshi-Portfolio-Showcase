@@ -599,6 +599,10 @@
   background: #0a0a0a;
 }
 
+.timeline-detail--mobile .timeline-detail__info--no-media {
+  padding-top: 56px;
+}
+
 .timeline-detail__info {
   /* Default for desktop - no special styling needed */
 }
